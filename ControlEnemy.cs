@@ -87,7 +87,7 @@ public class ControlEnemy : MonoBehaviour,IKillable
 
     void AttackPlayer()
     {
-        int damage = Random.Range(20,30);
+        int damage = Random.Range(10,15);
         Player.GetComponent<ControlPlayer>().TakeDamage(damage);
     }
 
@@ -106,8 +106,8 @@ public class ControlEnemy : MonoBehaviour,IKillable
         animationEnemy.Die();
         movementEnemy.Die();
         this.enabled = false;
-        Destroy(gameObject,1);
         CheckMedicalKitGeneration(generateMedicalKitPercentage);
+        this.gameObject.SetActive(false);
         ScriptControlInterface.UpdateNumberOfZombiesKilled();
         myGenerator.DecreaseAmountOfLivingZombies();
     }

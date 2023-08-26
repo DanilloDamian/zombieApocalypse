@@ -15,17 +15,34 @@ public class ZombieGenerator : MonoBehaviour
     private int amountOfZombiesAlive;
     private float timeNextIncreasedDifficulty = 15;
     private float counterIncreaseDifficulty;
+    public List<ControlEnemy> listZombies;
+    public int initialNumberList= 10;
 
     void Start()
     {
         player = GameObject.FindWithTag(Tags.Player);
         counterIncreaseDifficulty = timeNextIncreasedDifficulty;
+        InitList();
         for (int i = 0; i < maxAmountOfZombiesLive; i++)
         {
             StartCoroutine(GenerateNewZombie());
         }
     }
+    void InitList()
+    {
+        for(int i=0;i<=initialNumberList;i++)
+        {
+            InitZombie();
+        }
 
+    }
+    void InitZombie()
+    {
+        GameObject obj = Instantiate(Zombie,transform.position, Quaternion.identity);
+        obj.SetActive(false);
+        obj.GetComponent<ControlEnemy>().myGenerator = this;
+        listZombies.Add(obj.GetComponent<ControlEnemy>());
+    }
     void Update()
     {
         bool canISpawnZombiesOverDistance = Vector3.Distance(transform.position,player.transform.position) > distanceFromPlayerToGeneration;
@@ -36,6 +53,13 @@ public class ZombieGenerator : MonoBehaviour
             meterTime += Time.deltaTime;
             if(meterTime >= TimeGenerateZombie)
             {
+                List<ControlEnemy> noActiveZombies = new List<ControlEnemy>();
+                foreach(ControlEnemy zombie in listZombies)
+                { 
+                    if(zombie.gameObject.activeSelf == false) noActiveZombies.Add(zombie);
+                }
+                if(noActiveZombies.Count == 0 ) InitZombie();             
+                
                 StartCoroutine(GenerateNewZombie());
                 meterTime =0;
             }
@@ -45,6 +69,7 @@ public class ZombieGenerator : MonoBehaviour
             counterIncreaseDifficulty = Time.timeSinceLevelLoad + timeNextIncreasedDifficulty;
             maxAmountOfZombiesLive++;
         }
+         
     }
 
     IEnumerator GenerateNewZombie()
@@ -57,9 +82,27 @@ public class ZombieGenerator : MonoBehaviour
             colliders = Physics.OverlapSphere(positionOfCreation,1,LayerZombie);
             yield return null;
         }
-        ControlEnemy zombie = Instantiate(Zombie,positionOfCreation,transform.rotation).GetComponent<ControlEnemy>();
-        zombie.myGenerator = this;
-        amountOfZombiesAlive++;
+        int i = Random.Range(0,listZombies.Count);
+        while(true){
+            var zombie = listZombies[i];            
+            if(!zombie.gameObject.activeInHierarchy)
+            {
+                zombie.gameObject.SetActive(true);
+                zombie.enabled = true;
+                zombie.transform.position = transform.position;
+
+                var zombieRB = zombie.GetComponent<Rigidbody>();              
+                zombieRB.isKinematic = true;               
+                zombieRB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+
+                zombie.GetComponent<Collider>().enabled = true;
+                amountOfZombiesAlive++;
+                break;
+            }else{
+                i = Random.Range(0,listZombies.Count);
+            }
+
+        }
     }
 
     Vector3 RandomizePosition()
