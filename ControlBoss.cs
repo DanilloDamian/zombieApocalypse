@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ControlBoss : MonoBehaviour,IKillable
 {
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
     private Status statusBoss;
     private CharacterAnimation animationBoss;
     private CharacterMovement movementBoss;
@@ -17,6 +17,7 @@ public class ControlBoss : MonoBehaviour,IKillable
     public GameObject BossBloodParticle;
     [HideInInspector]
     public Transform player;
+    
 
     private void Start()
     {
@@ -84,6 +85,6 @@ public class ControlBoss : MonoBehaviour,IKillable
         this.enabled = false;
         Instantiate(MedicalKitPrefab,transform.position, Quaternion.identity);
         agent.enabled = false;
-        Destroy(gameObject,2);       
+        this.gameObject.SetActive(false);       
     }
 }

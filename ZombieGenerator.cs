@@ -16,7 +16,7 @@ public class ZombieGenerator : MonoBehaviour
     private float timeNextIncreasedDifficulty = 15;
     private float counterIncreaseDifficulty;
     public List<ControlEnemy> listZombies;
-    public int initialNumberList= 10;
+    public int initialNumberList= 15;
 
     void Start()
     {
@@ -30,7 +30,7 @@ public class ZombieGenerator : MonoBehaviour
     }
     void InitList()
     {
-        for(int i=0;i<=initialNumberList;i++)
+        for(int i=0;i<initialNumberList;i++)
         {
             InitZombie();
         }
