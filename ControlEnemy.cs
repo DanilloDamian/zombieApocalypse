@@ -14,7 +14,7 @@ public class ControlEnemy : MonoBehaviour,IKillable
     private Vector3 randomPosition;
     public GameObject Player ;
     public AudioClip SoundOfDeath;
-    public GameObject MedicalKitPrefab;
+    public ReserveMedicalKit reserveMedicalKit;
     public ControlInterface ScriptControlInterface;
     public GameObject ZombieBloodParticle;
     [HideInInspector]
@@ -24,7 +24,8 @@ public class ControlEnemy : MonoBehaviour,IKillable
     {        
         Player = GameObject.FindWithTag(Tags.Player); 
         animationEnemy = GetComponent<CharacterAnimation>();
-        movementEnemy = GetComponent<CharacterMovement>();
+        movementEnemy = GetComponent<CharacterMovement>();        
+        reserveMedicalKit = GameObject.FindObjectOfType(typeof(ReserveMedicalKit)) as ReserveMedicalKit;        
         status = GetComponent<Status>();
         ScriptControlInterface = GameObject.FindObjectOfType(typeof(ControlInterface)) as ControlInterface;
     }
@@ -121,7 +122,7 @@ public class ControlEnemy : MonoBehaviour,IKillable
     {
         if(Random.value <= generationPercentage)
         {
-            Instantiate(MedicalKitPrefab,transform.position, Quaternion.identity);
+            reserveMedicalKit.PullMedicalKit(transform.position);
         }
     }
 

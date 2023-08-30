@@ -10,7 +10,7 @@ public class ControlBoss : MonoBehaviour,IKillable
     private Status statusBoss;
     private CharacterAnimation animationBoss;
     private CharacterMovement movementBoss;
-    public GameObject MedicalKitPrefab;
+    public ReserveMedicalKit reserveMedicalKit;
     public Slider SliderBossLife;
     public Image ImageSlider;
     public Color MaximumColorLife, MinimalColorLife;
@@ -25,6 +25,7 @@ public class ControlBoss : MonoBehaviour,IKillable
         agent =  GetComponent<NavMeshAgent>();
         statusBoss = GetComponent<Status>();
         animationBoss = GetComponent<CharacterAnimation>();
+        reserveMedicalKit = GameObject.FindObjectOfType(typeof(ReserveMedicalKit)) as ReserveMedicalKit;
         movementBoss = GetComponent<CharacterMovement>();
         agent.speed = statusBoss.Speed;
         SliderBossLife.maxValue = statusBoss.InitialLife;
@@ -83,7 +84,7 @@ public class ControlBoss : MonoBehaviour,IKillable
         animationBoss.Die();        
         movementBoss.Die();
         this.enabled = false;
-        Instantiate(MedicalKitPrefab,transform.position, Quaternion.identity);        
+        reserveMedicalKit.PullMedicalKit(transform.position);        
         StartCoroutine(SetActiveDie());       
     }
      IEnumerator SetActiveDie()
