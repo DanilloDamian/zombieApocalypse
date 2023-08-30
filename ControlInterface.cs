@@ -69,7 +69,7 @@ public class ControlInterface : MonoBehaviour
     public void UpdateNumberOfZombiesKilled()
     {
         amountOfZombiesKilled++;
-        TextNumberOfZombiesKilled.text = "x "+amountOfZombiesKilled;
+        TextNumberOfZombiesKilled.text = amountOfZombiesKilled.ToString();
     }
 
     public void AppearCreatedBossText()
