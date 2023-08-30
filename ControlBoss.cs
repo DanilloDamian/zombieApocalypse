@@ -83,8 +83,13 @@ public class ControlBoss : MonoBehaviour,IKillable
         animationBoss.Die();        
         movementBoss.Die();
         this.enabled = false;
-        Instantiate(MedicalKitPrefab,transform.position, Quaternion.identity);
+        Instantiate(MedicalKitPrefab,transform.position, Quaternion.identity);        
+        StartCoroutine(SetActiveDie());       
+    }
+     IEnumerator SetActiveDie()
+    {
+        yield return new WaitForSeconds(4f);
+        this.gameObject.SetActive(false);        
         agent.enabled = false;
-        this.gameObject.SetActive(false);       
     }
 }

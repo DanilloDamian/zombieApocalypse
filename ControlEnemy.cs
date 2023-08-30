@@ -107,9 +107,14 @@ public class ControlEnemy : MonoBehaviour,IKillable
         movementEnemy.Die();
         this.enabled = false;
         CheckMedicalKitGeneration(generateMedicalKitPercentage);
-        this.gameObject.SetActive(false);
+        StartCoroutine(SetActiveDie());
         ScriptControlInterface.UpdateNumberOfZombiesKilled();
         myGenerator.DecreaseAmountOfLivingZombies();
+    }
+    IEnumerator SetActiveDie()
+    {
+        yield return new WaitForSeconds(2f);
+        this.gameObject.SetActive(false);
     }
 
     public void CheckMedicalKitGeneration(float generationPercentage)

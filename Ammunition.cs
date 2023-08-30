@@ -35,6 +35,6 @@ public class Ammunition : MonoBehaviour
             boss.BloodParticle(transform.position, inversionOfRotation);
             break;           
         }
-        Destroy(gameObject);
+        this.gameObject.SetActive(false);
     }  
 }
