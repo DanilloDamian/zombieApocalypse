@@ -9,7 +9,7 @@ public class MedicalKit : MonoBehaviour
     
     void Start()
     {
-        Destroy(gameObject,timeOfDestruction);
+        StartCoroutine(DestroyMedicalKit());
     }
 
     private void OnTriggerEnter(Collider collisionObject)
@@ -17,7 +17,12 @@ public class MedicalKit : MonoBehaviour
         if(collisionObject.tag == Tags.Player)
         {
             collisionObject.GetComponent<ControlPlayer>().HealLife(amountHeals);
-            Destroy(gameObject);
+            this.gameObject.SetActive(false);
         }
+    }
+    IEnumerator DestroyMedicalKit()
+    {
+        yield return new WaitForSeconds(timeOfDestruction);
+        this.gameObject.SetActive(false);
     }
 }
